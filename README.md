@@ -1,5 +1,5 @@
-# RoM-KimiAI
-Homunculus(Kimi) AI for Return to Morroc
+# Return to Morroc - Homunculus (Kimi) AI
+Homunculus(Kimi) AI for Return to Morroc, made in Lua programming language.
 
 ## How to "install"
 - Replace AI.lua in ReturnToMorroc/AI_sakray/USER_AI with AI.lua file from repo
@@ -12,5 +12,9 @@ IDLE_HEAL_THRESHOLD     = 90    -- % of Owner / Kimi HP when to spam Heal out of
 COMBAT_HEAL_THRESHOLD   = 50    -- % of Owner / Kimi HP when to spam Heal during combat
 WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defence (not used yet)
 ```
+
+## Documentation / Sources
+http://winter.sgv417.jp/alchemy/download/official/AI_manual_en.html
+
 
 Can contact discord user 'asfaras' for questions and feature requests.
