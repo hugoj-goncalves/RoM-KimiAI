@@ -20,7 +20,7 @@ WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defe
 - Auto skill instead of attack (Breath for Occult Kimi, Claw for the rest)
 - Auto heal when bellow x% HP
 - Better aggro
-**TODO**<br
+<br>**TODO**<br>
 - Auto Warm Defense
 - Kiting & dodge
 - Improve skill usage and auto detect skill level(s)
