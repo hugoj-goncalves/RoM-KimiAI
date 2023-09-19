@@ -259,7 +259,7 @@ end
 
 function	OnFOLLOW_CMD()
 
-	-- ´ë±â¸í·ÉÀº ´ë±â»óÅÂ¿Í ÈŞ½Ä»óÅÂ¸¦ ¼­·Î ÀüÈ¯½ÃÅ²´Ù. 
+	-- ëŒ€ê¸°ëª…ë ¹ì€ ëŒ€ê¸°ìƒíƒœì™€ íœ´ì‹ìƒíƒœë¥¼ ì„œë¡œ ì „í™˜ì‹œí‚¨ë‹¤. 
 	if (MyState ~= FOLLOW_CMD_ST) then
 		MoveToOwner(MyID)
 		MyState = FOLLOW_CMD_ST
@@ -324,7 +324,7 @@ function	OnIDLE_ST()
 
 	local cmd = List.popleft(ResCmdList)
 	if (cmd ~= nil) then		
-		ProcessCommand(cmd)	-- ¿¹¾à ¸í·É¾î Ã³¸® 
+		ProcessCommand(cmd)	-- ì˜ˆì•½ ëª…ë ¹ì–´ ì²˜ë¦¬ 
 		return 
 	end
 
@@ -687,25 +687,25 @@ function OnFOLLOW_CMD_ST()
 	TraceAI("OnFOLLOW_CMD_ST")
 
 	local ownerX, ownerY, myX, myY
-	ownerX, ownerY = GetV(V_POSITION,GetV(V_OWNER,MyID)) -- ÁÖÀÎ
-	myX, myY = GetV(V_POSITION,MyID)					  -- ³ª 
+	ownerX, ownerY = GetV(V_POSITION,GetV(V_OWNER,MyID)) -- ì£¼ì¸
+	myX, myY = GetV(V_POSITION,MyID)					  -- ë‚˜ 
 	
 	local d = GetDistance (ownerX,ownerY,myX,myY)
 
-	if ( d <= 3) then									  -- 3¼¿ ÀÌÇÏ °Å¸®¸é 
+	if ( d <= 3) then									  -- 3ì…€ ì´í•˜ ê±°ë¦¬ë©´ 
 		return 
 	end
 
 	local motion = GetV(V_MOTION,MyID)
-	if (motion == MOTION_MOVE) then                       -- ÀÌµ¿Áß
+	if (motion == MOTION_MOVE) then                       -- ì´ë™ì¤‘
 		d = GetDistance(ownerX, ownerY, MyDestX, MyDestY)
-		if ( d > 3) then                                  -- ¸ñÀûÁö º¯°æ ?
+		if ( d > 3) then                                  -- ëª©ì ì§€ ë³€ê²½ ?
 			MoveToOwner(MyID)
 			MyDestX = ownerX
 			MyDestY = ownerY
 			return
 		end
-	else                                                  -- ´Ù¸¥ µ¿ÀÛ 
+	else                                                  -- ë‹¤ë¥¸ ë™ì‘ 
 		MoveToOwner(MyID)
 		MyDestX = ownerX
 		MyDestY = ownerY
@@ -923,16 +923,16 @@ function AI(myid)
 	if msg[1] == NONE_CMD then
 		if rmsg[1] ~= NONE_CMD then
 			if List.size(ResCmdList) < 10 then
-				List.pushright(ResCmdList,rmsg) -- ¿¹¾à ¸í·É ÀúÀå
+				List.pushright(ResCmdList,rmsg) -- ì˜ˆì•½ ëª…ë ¹ ì €ì¥
 			end
 		end
 	else
-		List.clear(ResCmdList)	-- »õ·Î¿î ¸í·ÉÀÌ ÀÔ·ÂµÇ¸é ¿¹¾à ¸í·ÉµéÀº »èÁ¦ÇÑ´Ù.  
-		ProcessCommand (msg)	-- ¸í·É¾î Ã³¸® 
+		List.clear(ResCmdList)	-- ìƒˆë¡œìš´ ëª…ë ¹ì´ ì…ë ¥ë˜ë©´ ì˜ˆì•½ ëª…ë ¹ë“¤ì€ ì‚­ì œí•œë‹¤.  
+		ProcessCommand (msg)	-- ëª…ë ¹ì–´ ì²˜ë¦¬ 
 	end
 
 		
-	-- »óÅÂ Ã³¸® 
+	-- ìƒíƒœ ì²˜ë¦¬ 
  	if (MyState == IDLE_ST) then
 		OnIDLE_ST()
 	elseif (MyState == CHASE_ST) then					
