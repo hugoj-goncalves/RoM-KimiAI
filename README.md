@@ -6,8 +6,8 @@ Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and 
 - Auto skill instead of attack (Breath for Occult Kimi, Claw for the rest)
 - Auto heal when bellow x% HP
 - Better aggro
-<br> 
-**TO-DO**<br>
+
+### TO-DO
 - Auto Warm Defense
 - Kiting & dodge
 - Improve skill usage and auto detect skill level(s)
