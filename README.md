@@ -19,12 +19,13 @@ WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defe
 ## How to customize
 The AI uses a state machine to decide what course of action it should take, the states are defined at the start of the file and should not be modified. <br>
 Adding custom states is possible but it's unknown if you can actually call them without issues. (see KITE_CMD_ST) <br>
-There are Command and State Processes, some base logic happens inside Command Process, but most of your logic should happen inside State Process. <br>
-If your Kimi stops working, you made a mistake in the code while adding / changing something. Take extra caution in syntax and test one thing at a time! <br><br>
+There are Command- and State Processes, some base logic happens inside Command Process, but most of the logic should happen inside State Process. <br>
+If your Kimi stops working, you probably made a mistake in the code while adding or changing something. Take extra caution in syntax and work on one thing at a time! <br><br>
 
-For example, we can modify **function	OnIDLE_ST()** to do more stuff while idle (Owner is standing, out of combat). <br>
-Use GetV(V_MOTION, OwnerID) to get the current motion of the owner and store it. <br>
-Then compare it to specific motion, in this case MOTION_SIT to know if the owner is sitting. <br>
+**Example**<br>
+We can modify **function	OnIDLE_ST()** to do more stuff while idle (Owner is standing, out of combat). <br>
+Use **GetV(V_MOTION, OwnerID)** to get the current motion of the owner and store it. <br>
+Then compare it to specific motion, in this case **MOTION_SIT** to know if the owner is sitting. <br>
 If the condition is true, we can do something and call return to not execute any code bellow <br>
 ```
 function	OnIDLE_ST()
@@ -42,7 +43,7 @@ function	OnIDLE_ST()
 end
 ```
 
-**function CircleAroundTarget(TrgID)** is a custom function and has some predefined variables at the top of the file called **AAI_CIRC_X**, **AAI_CIRC_Y** and **CircleDir**
+**CircleAroundTarget(TrgID)** is a custom function and has some predefined variables at the top of the file called **AAI_CIRC_X**, **AAI_CIRC_Y** and **CircleDir**
 ```
 function CircleAroundTarget(TrgID)
 
