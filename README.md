@@ -54,7 +54,7 @@ function	OnIDLE_ST()
 end
 ```
 
-**CircleAroundTarget(TrgID)** is a custom function and has some predefined variables at the top of the file called **AAI_CIRC_X**, **AAI_CIRC_Y** and **CircleDir**.
+**CircleAroundTarget(TrgID)** is a custom function that has some predefined variables at the top of the file called **AAI_CIRC_X**, **AAI_CIRC_Y** and **CircleDir**.
 ```
 function CircleAroundTarget(TrgID)
 
