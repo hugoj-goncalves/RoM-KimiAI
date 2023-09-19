@@ -16,6 +16,15 @@ WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defe
 ```
 <br>
 
+## Basic features
+- Auto skill instead of attack (Breath for Occult Kimi, Claw for the rest)
+- Auto heal when bellow x% HP
+- Better aggro
+**TODO**<br
+- Auto Warm Defense
+- Kiting & dodge
+- Improve skill usage and auto detect skill level(s)
+
 ## How to customize
 The AI uses a state machine to decide what course of action it should take, the states are defined at the start of the file and should not be modified. <br>
 Adding custom states is possible but it's unknown if you can call them without issues. (see KITE_CMD_ST) <br>
