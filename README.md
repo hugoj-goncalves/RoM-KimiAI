@@ -65,11 +65,11 @@ function CircleAroundTarget(TrgID)
 	MyDestY = oy + AAI_CIRC_Y[CircleDir]
 
 	--------------- At destination -------------
-	-- Not sure if there is RO jank, but previous if check used math, probaby dont need it
+	-- Not sure if there is RO jank, but previously used math
 	--if  (math.abs(MyDestX - x) < 1)
 	--and (math.abs(MyDestY - y) < 1) -- yes!
 	if (x == MyDestX)
-	and (y == MyDestY)
+	and (y == MyDestY) -- yes!
 	then
 
 		CircleDir = CircleDir + 1 -- increment position
