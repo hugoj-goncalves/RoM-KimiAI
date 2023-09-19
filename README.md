@@ -2,6 +2,17 @@
 Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and some documentation how to customize it.
 <br>
 
+## Basic features
+- Auto skill instead of attack (Breath for Occult Kimi, Claw for the rest)
+- Auto heal when bellow x% HP
+- Better aggro
+<br> 
+**TO-DO**
+- Auto Warm Defense
+- Kiting & dodge
+- Improve skill usage and auto detect skill level(s)
+<br>
+
 ## How to "install"
 - Make back up of **AI.lua** inside ReturnToMorroc/**AI_sakray/USER_AI**
 - Replace **AI.lua** in ReturnToMorroc/**AI_sakray/USER_AI** with **AI.lua** file from repo
@@ -15,16 +26,6 @@ COMBAT_HEAL_THRESHOLD   = 50    -- % of Owner / Kimi HP when to spam Heal during
 WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defence (not used yet)
 ```
 <br>
-
-## Basic features
-- Auto skill instead of attack (Breath for Occult Kimi, Claw for the rest)
-- Auto heal when bellow x% HP
-- Better aggro
-<br> 
-**TO-DO**
-- Auto Warm Defense
-- Kiting & dodge
-- Improve skill usage and auto detect skill level(s)
 
 ## How to customize
 The AI uses a state machine to decide what course of action it should take, the states are defined at the start of the file and should not be modified. <br>
