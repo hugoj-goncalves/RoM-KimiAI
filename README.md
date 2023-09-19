@@ -16,5 +16,5 @@ WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defe
 ## Documentation / Sources
 http://winter.sgv417.jp/alchemy/download/official/AI_manual_en.html
 
-
+ 
 Can contact discord user 'asfaras' for questions and feature requests.
