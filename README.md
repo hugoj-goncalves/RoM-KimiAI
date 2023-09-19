@@ -18,8 +18,8 @@ WARM_DEF_MONSTERS       = 3     -- Number of monsters required to auto Warm Defe
 
 ## How to customize
 The AI uses a state machine to decide what course of action it should take, the states are defined at the start of the file and should not be modified. <br>
-Adding custom states is possible but it's unknown if you can actually call them without issues. (see KITE_CMD_ST) <br>
-There are Command- and State Processes, some base logic happens inside Command Process, but most of the logic should happen inside State Process. <br>
+Adding custom states is possible but it's unknown if you can call them without issues. (see KITE_CMD_ST) <br>
+There are Command- and State Processes, some basic logic happens inside Command Process, but most of the logic should happen inside State Process. <br>
 If your Kimi stops working, you probably made a mistake somewhere while adding or changing something. Be extra careful with syntax! <br><br>
 
 **Example**<br>
