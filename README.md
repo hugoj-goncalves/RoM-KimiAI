@@ -13,7 +13,7 @@ Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and 
 - Improve skill usage and auto detect skill level(s)
 <br>
 
-<code style="color : red">text</code>
+<code style="color : #ffffff">text</code>
 
 ## How to "install"
 - Make back up of **AI.lua** inside ReturnToMorroc/**AI_sakray/USER_AI**
