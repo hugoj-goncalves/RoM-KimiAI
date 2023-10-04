@@ -16,7 +16,7 @@ Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and 
 ## How to "install"
 - Make back up of **AI.lua** inside ReturnToMorroc/**AI_sakray/USER_AI**
 - Replace **AI.lua** in ReturnToMorroc/**AI_sakray/USER_AI** with the **AI.lua** file from repo
-- Ingame type **/hoai** to toggle between default and custom AI ![#f03c15](([important](https://placehold.co/15x15/f03c15/f03c15.png))) `#f03c15`
+- Ingame type **/hoai** to toggle between default and custom AI ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `#f03c15`
 - _(optional)_ Configure the AI by editing '**Quick Config**' values at the start of the file
 
 ```
