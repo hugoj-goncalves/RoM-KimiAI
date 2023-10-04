@@ -37,7 +37,7 @@ If your Kimi stops working, you probably made a mistake somewhere while adding o
 We can modify **function	OnIDLE_ST()** to do more stuff while idle. (Owner is standing, out of combat) <br>
 Use **GetV(V_MOTION, OwnerID)** to get the current motion of the owner and store it. <br>
 Then compare it to specific motion, in this case **MOTION_SIT** to know if the owner is sitting. <br>
-If the condition is true, we can do something and call return to not execute any code bellow. (dont return and keep going) <br>
+If the condition is true, we can do something and call return to not execute any code bellow. (optional) <br>
 ```
 function	OnIDLE_ST()
 
