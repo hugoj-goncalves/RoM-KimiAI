@@ -1,5 +1,5 @@
 # Return to Morroc - Homunculus (Kimi) AI
-Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and some documentation how to customize it.
+Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and includes some documentation on how to customize it.
 <br>
 
 ## Basic features
