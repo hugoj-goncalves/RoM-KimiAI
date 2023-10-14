@@ -1,6 +1,6 @@
--- Return to Morroc KIMI AI v0.0.2
+-- Return to Morroc KIMI AI v0.0.3
 -- Made by Shift
--- TODO -> Add Ally Swap & Warm Def
+-- TODO -> Add Ally Swap & Body Double
 -- 
 
 dofile("./AI/Const.lua") -- Reading outside this folder
@@ -11,9 +11,12 @@ dofile("./AI/Util.lua") -- Reading outside this folder
 -- Quick Config
 -----------------------------
 AGGRO_MODE				= 1		-- 0 = Passive, 1 = Agressive
-IDLE_HEAL_THRESHOLD		= 90	-- % of Owner / Kimi HP when to spam Heal out of combat
-COMBAT_HEAL_THRESHOLD	= 50	-- % of Owner / Kimi HP when to spam Heal during combat
-WARM_DEF_MONSTERS		= 3		-- Number of monsters required to auto Warm Defence (not used yet)
+MAX_AGGRO_RANGE			= 10		-- Max range where to find monsters while standing
+IDLE_HEAL_THRESHOLD		= 70	-- % of Owner / Kimi HP when to spam Heal out of combat
+COMBAT_HEAL_THRESHOLD	= 40	-- % of Owner / Kimi HP when to spam Heal during combat
+AUTO_WARM_DEF			= 1		-- 0 = Disabled, 1 = Enabled
+
+
 
 ----------------------------
 
@@ -95,6 +98,7 @@ S_ILLUSION_OF_LIGHT		= 8034
 --S_TEST.Engaged	= false
 --S_TEST.TimeOut	= 0
 --S_TEST.Target		= 0
+WarmDefTimer = 0
 
 ------------------------------------------
 -- Kimi IDs for readability -> Move to Const.lua
@@ -259,7 +263,7 @@ end
 
 function	OnFOLLOW_CMD()
 
-	-- 대기명령은 대기상태와 휴식상태를 서로 전환시킨다. 
+	-- ´ë±â¸í·ÉÀº ´ë±â»óÅÂ¿Í ÈÞ½Ä»óÅÂ¸¦ ¼­·Î ÀüÈ¯½ÃÅ²´Ù. 
 	if (MyState ~= FOLLOW_CMD_ST) then
 		MoveToOwner(MyID)
 		MyState = FOLLOW_CMD_ST
@@ -315,7 +319,7 @@ end
 
 
 
--------------- state process  --------------------
+-------------- State Process  --------------------
 
 
 function	OnIDLE_ST()
@@ -324,7 +328,7 @@ function	OnIDLE_ST()
 
 	local cmd = List.popleft(ResCmdList)
 	if (cmd ~= nil) then		
-		ProcessCommand(cmd)	-- 예약 명령어 처리 
+		ProcessCommand(cmd)	-- ¿¹¾à ¸í·É¾î Ã³¸® 
 		return 
 	end
 
@@ -333,7 +337,7 @@ function	OnIDLE_ST()
 	-----------------------
 
 	local distance = GetDistanceFromOwner(MyID)
-	if (distance > 3 or distance == -1) then		-- MYOWNER_OUTSIGNT_IN
+	if (distance > 6 or distance == -1) then		-- MYOWNER_OUTSIGNT_IN
 		MyState = FOLLOW_ST
 		TraceAI("IDLE_ST -> FOLLOW_ST")
 		return
@@ -442,6 +446,17 @@ function	OnCHASE_ST()
 
 	TraceAI ("OnCHASE_ST")
 
+	-----------------------
+	-- Warm Def
+	-----------------------
+	if (AUTO_WARM_DEF == 1) then
+		if (true == DoWarmDef()) then
+			return
+		end
+	end
+
+	SetSkill() --Always use skill
+
 	if (true == IsOutOfSight(MyID,MyEnemy)) then	-- ENEMY_OUTSIGHT_IN
 		MyState = IDLE_ST
 		MyEnemy = 0
@@ -449,13 +464,14 @@ function	OnCHASE_ST()
 		TraceAI("CHASE_ST -> IDLE_ST : ENEMY_OUTSIGHT_IN")
 		return
 	end
+
 	if (true == IsInAttackSight(MyID,MyEnemy)) then  -- ENEMY_INATTACKSIGHT_IN
 		MyState = ATTACK_ST
 		TraceAI("CHASE_ST -> ATTACK_ST : ENEMY_INATTACKSIGHT_IN")
 		return
 	end
 
-	local x, y = GetV (V_POSITION_APPLY_SKILLATTACKRANGE, MyEnemy, MySkill, MySkillLevel)
+		local x, y = GetV (V_POSITION_APPLY_SKILLATTACKRANGE, MyEnemy, MySkill, MySkillLevel)
 	if (MyDestX ~= x or MyDestY ~= y) then			-- DESTCHANGED_IN
 		MyDestX, MyDestY = GetV (V_POSITION_APPLY_SKILLATTACKRANGE, MyEnemy, MySkill, MySkillLevel)
 		Move(MyID,MyDestX,MyDestY)
@@ -470,6 +486,15 @@ end
 function	OnATTACK_ST()
 
 	TraceAI("OnATTACK_ST")
+
+	-----------------------
+	-- Warm Def
+	-----------------------
+	if (AUTO_WARM_DEF == 1) then
+		if (true == DoWarmDef()) then
+			return
+		end
+	end
 
 	-----------------------
 	-- Heals
@@ -492,11 +517,7 @@ function	OnATTACK_ST()
 
 	-----------------------
 
-	if (true == IsOutOfSight(MyID,MyEnemy)) then	-- ENEMY_OUTSIGHT_IN
-		MyState = FOLLOW_ST
-		TraceAI("ATTACK_ST -> IDLE_ST")
-		return 
-	end
+	SetSkill() --Always use skill
 
 	if (MOTION_DEAD == GetV(V_MOTION,MyEnemy)) then   -- ENEMY_DEAD_IN
 		MyState = FOLLOW_ST
@@ -504,7 +525,11 @@ function	OnATTACK_ST()
 		return
 	end
 
-	SetSkill() --Always use skill
+	if (true == IsOutOfSight(MyID,MyEnemy)) then	-- ENEMY_OUTSIGHT_IN
+		MyState = FOLLOW_ST
+		TraceAI("ATTACK_ST -> IDLE_ST")
+		return 
+	end
 		
 	if (false == IsInAttackSight(MyID,MyEnemy)) then  -- ENEMY_OUTATTACKSIGHT_IN
 		MyState = CHASE_ST
@@ -687,25 +712,25 @@ function OnFOLLOW_CMD_ST()
 	TraceAI("OnFOLLOW_CMD_ST")
 
 	local ownerX, ownerY, myX, myY
-	ownerX, ownerY = GetV(V_POSITION,GetV(V_OWNER,MyID)) -- 주인
-	myX, myY = GetV(V_POSITION,MyID)					  -- 나 
+	ownerX, ownerY = GetV(V_POSITION,GetV(V_OWNER,MyID)) -- ÁÖÀÎ
+	myX, myY = GetV(V_POSITION,MyID)					  -- ³ª 
 	
 	local d = GetDistance (ownerX,ownerY,myX,myY)
 
-	if ( d <= 3) then									  -- 3셀 이하 거리면 
+	if ( d <= 3) then									  -- 3¼¿ ÀÌÇÏ °Å¸®¸é 
 		return 
 	end
 
 	local motion = GetV(V_MOTION,MyID)
-	if (motion == MOTION_MOVE) then                       -- 이동중
+	if (motion == MOTION_MOVE) then                       -- ÀÌµ¿Áß
 		d = GetDistance(ownerX, ownerY, MyDestX, MyDestY)
-		if ( d > 3) then                                  -- 목적지 변경 ?
+		if ( d > 3) then                                  -- ¸ñÀûÁö º¯°æ ?
 			MoveToOwner(MyID)
 			MyDestX = ownerX
 			MyDestY = ownerY
 			return
 		end
-	else                                                  -- 다른 동작 
+	else                                                  -- ´Ù¸¥ µ¿ÀÛ 
 		MoveToOwner(MyID)
 		MyDestX = ownerX
 		MyDestY = ownerY
@@ -821,11 +846,11 @@ function	GetMyEnemyA(myid)
 	local target
 	for i,v in ipairs(actors) do
 		if (v ~= owner and v ~= myid) then
-			target = GetV(V_TARGET,v)
-			if (target == myid) then
-				enemys[index] = v
-				index = index+1
-			end
+			--target = GetV(V_TARGET,v)
+			-- (target == myid or target == owner) then
+			enemys[index] = v
+			index = index+1
+			--end
 		end
 	end
 
@@ -890,11 +915,19 @@ end
 
 function	CanChaseEnemy(enemyid)
 
-	local result = false
+	-- Default to true
+	local result = true
+
+	-- Run conditions if cant chase
+
+	--if (GetDistance2(myid, enemyid) > MAX_AGGRO_RANGE) then
+	--	result = false
+	--end
 
 	if (true == IsOutOfSight(MyID,enemyid)) then	-- ENEMY_OUTSIGHT_IN
 		result = false
 	end
+
 	if (true == IsInAttackSight(MyID,enemyid)) then  -- ENEMY_INATTACKSIGHT_IN
 		result = true
 	end
@@ -902,7 +935,6 @@ function	CanChaseEnemy(enemyid)
 	return result
 
 end
-
 
 
 function AI(myid)
@@ -923,16 +955,16 @@ function AI(myid)
 	if msg[1] == NONE_CMD then
 		if rmsg[1] ~= NONE_CMD then
 			if List.size(ResCmdList) < 10 then
-				List.pushright(ResCmdList,rmsg) -- 예약 명령 저장
+				List.pushright(ResCmdList,rmsg) -- ¿¹¾à ¸í·É ÀúÀå
 			end
 		end
 	else
-		List.clear(ResCmdList)	-- 새로운 명령이 입력되면 예약 명령들은 삭제한다.  
-		ProcessCommand (msg)	-- 명령어 처리 
+		List.clear(ResCmdList)	-- »õ·Î¿î ¸í·ÉÀÌ ÀÔ·ÂµÇ¸é ¿¹¾à ¸í·ÉµéÀº »èÁ¦ÇÑ´Ù.  
+		ProcessCommand (msg)	-- ¸í·É¾î Ã³¸® 
 	end
 
 		
-	-- 상태 처리 
+	-- »óÅÂ Ã³¸® 
  	if (MyState == IDLE_ST) then
 		OnIDLE_ST()
 	elseif (MyState == CHASE_ST) then					
@@ -965,11 +997,15 @@ function AI(myid)
 
 end
 
+
+
 function Clamp(x, min, max)
     if x < min then return min end
     if x > max then return max end
     return x
 end
+
+
 
 function KiteTarget(TrgID)
 
@@ -987,6 +1023,8 @@ function KiteTarget(TrgID)
 end
 
 
+
+--------------------------------------------------
 function CircleAroundTarget(TrgID)
 --------------------------------------------------
 
@@ -1022,6 +1060,8 @@ function CircleAroundTarget(TrgID)
 	end
 
 end
+
+
 
 --------------------------------------------------
 function DoSkill(Skill, Level, Target)
@@ -1065,6 +1105,7 @@ function DoSkill(Skill, Level, Target)
 end
 
 
+
 function SetSkill()
 
 	-- Todo -> GetSkill level
@@ -1078,6 +1119,24 @@ function SetSkill()
 	end
 
 end
+
+
+
+function DoWarmDef()
+
+	local result = false
+	local CurrTime = GetTick()
+
+	if WarmDefTimer > CurrTime then return result; end
+
+	DoSkill(S_WARM_DEF, 5, MyID)
+	WarmDefTimer = CurrTime + 12000 -- 12000 ms = 12 seconds
+	result = true
+
+	return result
+
+end
+
 
 function DoSwap() -- Not used currently
 
