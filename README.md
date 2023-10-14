@@ -21,10 +21,10 @@ Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and 
 
 ```
 AGGRO_MODE              = 1     -- 0 = Passive, 1 = Agressive
-MAX_AGGRO_RANGE			= 10		-- Max range where to find monsters while standing (NOT USED ATM)
+MAX_AGGRO_RANGE		= 10		-- Max range where to find monsters while standing (NOT USED ATM)
 IDLE_HEAL_THRESHOLD     = 90    -- % of Owner / Kimi HP when to spam Heal out of combat
 COMBAT_HEAL_THRESHOLD   = 50    -- % of Owner / Kimi HP when to spam Heal during combat
-AUTO_WARM_DEF			= 1		-- 0 = Disabled, 1 = Enabled
+AUTO_WARM_DEF		= 1		-- 0 = Disabled, 1 = Enabled
 ```
 <br>
 
