@@ -11,6 +11,7 @@ Homunculus (Kimi) AI for Return to Morroc, made in Lua programming language and 
 ### TO-DO 
 - Kiting & dodge
 - Improve skill usage (dancing, range and sp consumption)
+- Toggle autoskill use
 <br>
 
 ## How to "install"
