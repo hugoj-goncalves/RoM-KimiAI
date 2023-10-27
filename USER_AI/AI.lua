@@ -20,6 +20,8 @@ HEAL_LVL = 3
 HEAL_SP = 50
 BREATH_LVL = 10
 CLAWS_LVL = 1
+DROP_TARGET_IF_NOT_MOVING_FOR = 1500 -- go back to IDLE if target is not reachable for some reason
+MOVE_TO_OWNER_ACTION_DELAY = 1500 -- looks slower if move is called too often o.o
 
 ----------------------------
 
@@ -115,6 +117,7 @@ KIMI_RAGING = 4
 -- Caches
 ------------------------------------------
 MY_TRYING_MOVE_TIMER = 0
+MY_TRYING_MOVE_TO_OWNER_TIMER = 0
 MY_LAST_POS_X = -1
 MY_LAST_POS_Y = -1
 
@@ -389,23 +392,23 @@ function OnFOLLOW_ST()
 
     if (GetDistanceFromOwner(MyID) <= 7) then --  DESTINATION_ARRIVED_IN 
         MyState = IDLE_ST
-        MY_TRYING_MOVE_TIMER = 0
+        MY_TRYING_MOVE_TO_OWNER_TIMER = 0
         TraceAI("FOLLOW_ST -> IDLE_ST")
         return
     else -- if (GetV(V_MOTION, MyID) == MOTION_STAND) then
-        if (MY_TRYING_MOVE_TIMER > 0) then
+        if (MY_TRYING_MOVE_TO_OWNER_TIMER > 0) then
             local d = GetDistance(ownerX, ownerY, MyDestX, MyDestY)
             if (d > 3) then
                 MoveToOwner(MyID)
                 MyDestX = ownerX
                 MyDestY = ownerY
 
-                MY_TRYING_MOVE_TIMER = GetTick() + 2000
+                MY_TRYING_MOVE_TO_OWNER_TIMER = GetTick() + MOVE_TO_OWNER_ACTION_DELAY
                 TraceAI("FOLLOW_ST -> FOLLOW_ST UPDATED")
                 return
             end
 
-            if (GetTick() < MY_TRYING_MOVE_TIMER) then
+            if (GetTick() < MY_TRYING_MOVE_TO_OWNER_TIMER) then
                 return
             end
         end
@@ -414,7 +417,7 @@ function OnFOLLOW_ST()
         MyDestX = ownerX
         MyDestY = ownerY
 
-        MY_TRYING_MOVE_TIMER = GetTick() + 2000
+        MY_TRYING_MOVE_TO_OWNER_TIMER = GetTick() + MOVE_TO_OWNER_ACTION_DELAY
         TraceAI("FOLLOW_ST -> FOLLOW_ST")
         return
     end
@@ -494,7 +497,7 @@ function OnCHASE_ST()
         Move(MyID, MyDestX, MyDestY)
 
         if (MY_TRYING_MOVE_TIMER == 0) then
-            MY_TRYING_MOVE_TIMER = GetTick() + 2000
+            MY_TRYING_MOVE_TIMER = GetTick() + DROP_TARGET_IF_NOT_MOVING_FOR
         end
 
         TraceAI("CHASE_ST -> CHASE_ST : DESTCHANGED_IN (distance: " .. tostring(d) .. ")")
