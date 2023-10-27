@@ -15,9 +15,9 @@ IDLE_HEAL_THRESHOLD = 70 -- % of Owner / Kimi HP when to spam Heal out of combat
 COMBAT_HEAL_THRESHOLD = 40 -- % of Owner / Kimi HP when to spam Heal during combat
 AUTO_WARM_DEF = 0 -- 0 = Disabled, 1 = Enabled
 AUTO_ATTACK_SKILL = 1 -- 0 = Disabled, 1 = Enabled
-ATTACK_SP = 70
+ATTACK_SP = 70 -- 0 = Disables check
+HEAL_SP = 50 -- 0 = Disables check
 HEAL_LVL = 3
-HEAL_SP = 50
 BREATH_LVL = 10
 CLAWS_LVL = 1
 DROP_TARGET_IF_NOT_MOVING_FOR = 1500 -- go back to IDLE if target is not reachable for some reason
