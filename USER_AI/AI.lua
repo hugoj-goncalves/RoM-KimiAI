@@ -11,7 +11,7 @@ dofile("./AI/Util.lua") -- Reading outside this folder
 -----------------------------
 AGGRO_MODE = 1 -- 0 = Passive, 1 = Agressive
 MAX_AGGRO_RANGE = 10 -- Max range where to find monsters while standing
-IDLE_HEAL_THRESHOLD = 80 -- % of Owner / Kimi HP when to spam Heal out of combat
+IDLE_HEAL_THRESHOLD = 70 -- % of Owner / Kimi HP when to spam Heal out of combat
 COMBAT_HEAL_THRESHOLD = 40 -- % of Owner / Kimi HP when to spam Heal during combat
 AUTO_WARM_DEF = 0 -- 0 = Disabled, 1 = Enabled
 AUTO_ATTACK_SKILL = 1 -- 0 = Disabled, 1 = Enabled
